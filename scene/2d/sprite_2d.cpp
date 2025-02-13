@@ -111,6 +111,10 @@ void Sprite2D::_get_rects(Rect2 &r_src_rect, Rect2 &r_dst_rect, bool &r_filter_c
 	if (vflip) {
 		r_dst_rect.size.y = -r_dst_rect.size.y;
 	}
+	if (flip_effect) {
+		r_dst_rect.size.y = -r_dst_rect.size.y;
+		r_dst_rect.size.x = -r_dst_rect.size.x;
+	}
 }
 
 void Sprite2D::_notification(int p_what) {
@@ -208,6 +212,20 @@ void Sprite2D::set_flip_v(bool p_flip) {
 bool Sprite2D::is_flipped_v() const {
 	return vflip;
 }
+
+void Sprite2D::set_flip_effect(bool p_enable) {
+	if (flip_effect == p_enable) {
+		return;
+	}
+	flip_effect = p_enable;
+	print_line(flip_effect);
+	queue_redraw();
+}
+
+bool Sprite2D::is_flip_effect() const {
+	return flip_effect;
+}
+
 
 void Sprite2D::set_region_enabled(bool p_region_enabled) {
 	if (region_enabled == p_region_enabled) {
@@ -355,6 +373,10 @@ bool Sprite2D::is_pixel_opaque(const Point2 &p_point) const {
 	if (vflip) {
 		q.y = 1.0f - q.y;
 	}
+	if (flip_effect) {
+		q.x = 1.0f - q.x;
+		q.y = 1.0f - q.y;
+	}
 	q = q * src_rect.size + src_rect.position;
 	TextureRepeat repeat_mode = get_texture_repeat_in_tree();
 	bool is_repeat = repeat_mode == TEXTURE_REPEAT_ENABLED || repeat_mode == TEXTURE_REPEAT_MIRROR;
@@ -436,6 +458,7 @@ void Sprite2D::_texture_changed() {
 	}
 }
 
+
 void Sprite2D::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("set_texture", "texture"), &Sprite2D::set_texture);
 	ClassDB::bind_method(D_METHOD("get_texture"), &Sprite2D::get_texture);
@@ -451,7 +474,10 @@ void Sprite2D::_bind_methods() {
 
 	ClassDB::bind_method(D_METHOD("set_flip_v", "flip_v"), &Sprite2D::set_flip_v);
 	ClassDB::bind_method(D_METHOD("is_flipped_v"), &Sprite2D::is_flipped_v);
-
+	
+	ClassDB::bind_method(D_METHOD("set_flip_effect", "enagble"), &Sprite2D::set_flip_effect);
+	ClassDB::bind_method(D_METHOD("is_flip_effect"), &Sprite2D::is_flip_effect);
+	
 	ClassDB::bind_method(D_METHOD("set_region_enabled", "enabled"), &Sprite2D::set_region_enabled);
 	ClassDB::bind_method(D_METHOD("is_region_enabled"), &Sprite2D::is_region_enabled);
 
@@ -486,6 +512,7 @@ void Sprite2D::_bind_methods() {
 	ADD_PROPERTY(PropertyInfo(Variant::VECTOR2, "offset", PROPERTY_HINT_NONE, "suffix:px"), "set_offset", "get_offset");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "flip_h"), "set_flip_h", "is_flipped_h");
 	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "flip_v"), "set_flip_v", "is_flipped_v");
+	ADD_PROPERTY(PropertyInfo(Variant::BOOL, "flip_effect"), "set_flip_effect", "is_flip_effect");
 	ADD_GROUP("Animation", "");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "hframes", PROPERTY_HINT_RANGE, "1,16384,1"), "set_hframes", "get_hframes");
 	ADD_PROPERTY(PropertyInfo(Variant::INT, "vframes", PROPERTY_HINT_RANGE, "1,16384,1"), "set_vframes", "get_vframes");

@@ -46,6 +46,7 @@ class Sprite2D : public Node2D {
 
 	bool hflip = false;
 	bool vflip = false;
+	bool flip_effect = false;
 	bool region_enabled = false;
 	Rect2 region_rect;
 	bool region_filter_clip_enabled = false;
@@ -99,7 +100,10 @@ public:
 
 	void set_flip_v(bool p_flip);
 	bool is_flipped_v() const;
-
+	
+	void set_flip_effect(bool p_enable);
+	bool is_flip_effect() const;
+	
 	void set_region_enabled(bool p_enabled);
 	bool is_region_enabled() const;
 
@@ -123,6 +127,7 @@ public:
 
 	Rect2 get_rect() const;
 	virtual Rect2 get_anchorable_rect() const override;
+
 
 	Sprite2D();
 	~Sprite2D();

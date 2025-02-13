@@ -218,6 +218,10 @@ void Sprite2DEditor::_update_mesh_data() {
 				if (node->is_flipped_v()) {
 					vtx.y = rect.size.y - vtx.y;
 				}
+				if (node->is_flip_effect()) {
+					vtx.x = rect.size.x - vtx.x;
+					vtx.y = rect.size.y - vtx.y;
+				}
 				vtx += node->get_offset();
 				if (node->is_centered()) {
 					vtx -= rect.size / 2.0;
@@ -262,6 +266,10 @@ void Sprite2DEditor::_update_mesh_data() {
 					vtx.x = rect.size.x - vtx.x;
 				}
 				if (node->is_flipped_v()) {
+					vtx.y = rect.size.y - vtx.y;
+				}
+				if (node->is_flip_effect()) {
+					vtx.x = rect.size.x - vtx.x;
 					vtx.y = rect.size.y - vtx.y;
 				}
 				// Don't bake offset to Polygon2D which has offset property.
