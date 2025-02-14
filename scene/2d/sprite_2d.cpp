@@ -33,49 +33,59 @@
 #include "scene/main/viewport.h"
 
 #ifdef TOOLS_ENABLED
+// 编辑器获取状态
 Dictionary Sprite2D::_edit_get_state() const {
 	Dictionary state = Node2D::_edit_get_state();
 	state["offset"] = offset;
 	return state;
 }
 
+// 编辑器设置状态
 void Sprite2D::_edit_set_state(const Dictionary &p_state) {
 	Node2D::_edit_set_state(p_state);
 	set_offset(p_state["offset"]);
 }
 
+// 编辑器设置枢轴
 void Sprite2D::_edit_set_pivot(const Point2 &p_pivot) {
 	set_offset(get_offset() - p_pivot);
 	set_position(get_transform().xform(p_pivot));
 }
 
+// 编辑器获取枢轴
 Point2 Sprite2D::_edit_get_pivot() const {
 	return Vector2();
 }
 
+// 编辑器是否使用枢轴
 bool Sprite2D::_edit_use_pivot() const {
 	return true;
 }
 #endif // TOOLS_ENABLED
 
 #ifdef DEBUG_ENABLED
+// 编辑器点击时是否选中
 bool Sprite2D::_edit_is_selected_on_click(const Point2 &p_point, double p_tolerance) const {
 	return is_pixel_opaque(p_point);
 }
 
+// 编辑器获取矩形
 Rect2 Sprite2D::_edit_get_rect() const {
 	return get_rect();
 }
 
+// 编辑器是否使用矩形
 bool Sprite2D::_edit_use_rect() const {
 	return texture.is_valid();
 }
 #endif // DEBUG_ENABLED
 
+// 获取可锚定的矩形
 Rect2 Sprite2D::get_anchorable_rect() const {
 	return get_rect();
 }
 
+// 获取源矩形和目标矩形
 void Sprite2D::_get_rects(Rect2 &r_src_rect, Rect2 &r_dst_rect, bool &r_filter_clip_enabled) const {
 	Rect2 base_rect;
 
@@ -117,6 +127,7 @@ void Sprite2D::_get_rects(Rect2 &r_src_rect, Rect2 &r_dst_rect, bool &r_filter_c
 	}
 }
 
+// 通知处理
 void Sprite2D::_notification(int p_what) {
 	switch (p_what) {
 		case NOTIFICATION_DRAW: {
@@ -135,6 +146,7 @@ void Sprite2D::_notification(int p_what) {
 	}
 }
 
+// 设置纹理
 void Sprite2D::set_texture(const Ref<Texture2D> &p_texture) {
 	if (p_texture == texture) {
 		return;
@@ -155,10 +167,12 @@ void Sprite2D::set_texture(const Ref<Texture2D> &p_texture) {
 	item_rect_changed();
 }
 
+// 获取纹理
 Ref<Texture2D> Sprite2D::get_texture() const {
 	return texture;
 }
 
+// 设置是否居中
 void Sprite2D::set_centered(bool p_center) {
 	if (centered == p_center) {
 		return;
@@ -169,10 +183,12 @@ void Sprite2D::set_centered(bool p_center) {
 	item_rect_changed();
 }
 
+// 获取是否居中
 bool Sprite2D::is_centered() const {
 	return centered;
 }
 
+// 设置偏移量
 void Sprite2D::set_offset(const Point2 &p_offset) {
 	if (offset == p_offset) {
 		return;
@@ -183,10 +199,12 @@ void Sprite2D::set_offset(const Point2 &p_offset) {
 	item_rect_changed();
 }
 
+// 获取偏移量
 Point2 Sprite2D::get_offset() const {
 	return offset;
 }
 
+// 设置水平翻转
 void Sprite2D::set_flip_h(bool p_flip) {
 	if (hflip == p_flip) {
 		return;
@@ -196,10 +214,12 @@ void Sprite2D::set_flip_h(bool p_flip) {
 	queue_redraw();
 }
 
+// 获取是否水平翻转
 bool Sprite2D::is_flipped_h() const {
 	return hflip;
 }
 
+// 设置垂直翻转
 void Sprite2D::set_flip_v(bool p_flip) {
 	if (vflip == p_flip) {
 		return;
@@ -209,10 +229,12 @@ void Sprite2D::set_flip_v(bool p_flip) {
 	queue_redraw();
 }
 
+// 获取是否垂直翻转
 bool Sprite2D::is_flipped_v() const {
 	return vflip;
 }
 
+// 设置翻转效果
 void Sprite2D::set_flip_effect(bool p_enable) {
 	if (flip_effect == p_enable) {
 		return;
@@ -222,11 +244,12 @@ void Sprite2D::set_flip_effect(bool p_enable) {
 	queue_redraw();
 }
 
+// 获取翻转效果
 bool Sprite2D::is_flip_effect() const {
 	return flip_effect;
 }
 
-
+// 设置是否启用区域
 void Sprite2D::set_region_enabled(bool p_region_enabled) {
 	if (region_enabled == p_region_enabled) {
 		return;
@@ -237,10 +260,12 @@ void Sprite2D::set_region_enabled(bool p_region_enabled) {
 	notify_property_list_changed();
 }
 
+// 获取是否启用区域
 bool Sprite2D::is_region_enabled() const {
 	return region_enabled;
 }
 
+// 设置区域矩形
 void Sprite2D::set_region_rect(const Rect2 &p_region_rect) {
 	if (region_rect == p_region_rect) {
 		return;
@@ -253,10 +278,12 @@ void Sprite2D::set_region_rect(const Rect2 &p_region_rect) {
 	}
 }
 
+// 获取区域矩形
 Rect2 Sprite2D::get_region_rect() const {
 	return region_rect;
 }
 
+// 设置是否启用区域过滤剪裁
 void Sprite2D::set_region_filter_clip_enabled(bool p_region_filter_clip_enabled) {
 	if (region_filter_clip_enabled == p_region_filter_clip_enabled) {
 		return;
@@ -266,10 +293,12 @@ void Sprite2D::set_region_filter_clip_enabled(bool p_region_filter_clip_enabled)
 	queue_redraw();
 }
 
+// 获取是否启用区域过滤剪裁
 bool Sprite2D::is_region_filter_clip_enabled() const {
 	return region_filter_clip_enabled;
 }
 
+// 设置当前帧
 void Sprite2D::set_frame(int p_frame) {
 	ERR_FAIL_INDEX(p_frame, vframes * hframes);
 
@@ -282,10 +311,12 @@ void Sprite2D::set_frame(int p_frame) {
 	emit_signal(SceneStringName(frame_changed));
 }
 
+// 获取当前帧
 int Sprite2D::get_frame() const {
 	return frame;
 }
 
+// 设置帧坐标
 void Sprite2D::set_frame_coords(const Vector2i &p_coord) {
 	ERR_FAIL_INDEX(p_coord.x, hframes);
 	ERR_FAIL_INDEX(p_coord.y, vframes);
@@ -293,10 +324,12 @@ void Sprite2D::set_frame_coords(const Vector2i &p_coord) {
 	set_frame(p_coord.y * hframes + p_coord.x);
 }
 
+// 获取帧坐标
 Vector2i Sprite2D::get_frame_coords() const {
 	return Vector2i(frame % hframes, frame / hframes);
 }
 
+// 设置垂直帧数
 void Sprite2D::set_vframes(int p_amount) {
 	ERR_FAIL_COND_MSG(p_amount < 1, "Amount of vframes cannot be smaller than 1.");
 
@@ -313,10 +346,12 @@ void Sprite2D::set_vframes(int p_amount) {
 	notify_property_list_changed();
 }
 
+// 获取垂直帧数
 int Sprite2D::get_vframes() const {
 	return vframes;
 }
 
+// 设置水平帧数
 void Sprite2D::set_hframes(int p_amount) {
 	ERR_FAIL_COND_MSG(p_amount < 1, "Amount of hframes cannot be smaller than 1.");
 
@@ -325,10 +360,10 @@ void Sprite2D::set_hframes(int p_amount) {
 	}
 
 	if (vframes > 1) {
-		// Adjust the frame to fit new sheet dimensions.
+		// 调整帧以适应新的表格尺寸
 		int original_column = frame % hframes;
 		if (original_column >= p_amount) {
-			// Frame's column was dropped, reset.
+			// 帧的列被删除，重置
 			frame = 0;
 		} else {
 			int original_row = frame / hframes;
@@ -344,10 +379,12 @@ void Sprite2D::set_hframes(int p_amount) {
 	notify_property_list_changed();
 }
 
+// 获取水平帧数
 int Sprite2D::get_hframes() const {
 	return hframes;
 }
 
+// 判断像素是否不透明
 bool Sprite2D::is_pixel_opaque(const Point2 &p_point) const {
 	if (texture.is_null()) {
 		return false;
